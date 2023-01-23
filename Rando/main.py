@@ -1,7 +1,7 @@
 import os
 import discord
 import random
-import requests
+import aiohttp
 import json
 
 from thispersondoesnotexist import save_picture, get_online_person
@@ -134,8 +134,10 @@ async def face(ctx):
 #returns a random fact from uselessfacts.jsph.pl
 async def fact(ctx):
   url = "https://uselessfacts.jsph.pl/random.json?language=en"
-  response = requests.request("GET", url)  
-  data = json.loads(response.text)
+  async with aiohttp.ClientSession() as session:
+    async with session.get(url) as response:
+        data = await response.text()
+  data = json.loads(await response.text())
   useless_fact = data["text"]
   
   await ctx.send(useless_fact)         
