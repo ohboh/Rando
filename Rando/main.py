@@ -2,7 +2,6 @@ import os
 import discord
 import random
 import aiohttp
-import asyncio
 import json
 
 from thispersondoesnotexist import save_picture, get_online_person
@@ -83,7 +82,6 @@ async def guess(ctx):
 #returns a random Discord server member and prompts if you intend to ping selected member
 async def someone(ctx):
   await ctx.defer()
-  await asyncio.sleep(0)
   users = []
   for member in ctx.guild.members:
     if not member.bot:
@@ -92,7 +90,7 @@ async def someone(ctx):
   
   def check(ping):
       return ping.author == ctx.author and ping.channel == ctx.channel
-      
+    
   ping = await client.wait_for("message", check=check)
   if ping.content == "y":
     await ctx.send(random.choice(users).mention)
@@ -137,7 +135,6 @@ async def face(ctx):
   await ctx.defer()
   picture = await get_online_person()
   await save_picture(picture, "grabbedFace.png")
-  await asyncio.sleep(0)
   await ctx.send(file=discord.File(open("grabbedFace.png", "rb")))
   
 @client.hybrid_command(description="generates a random fact")
@@ -150,7 +147,7 @@ async def fact(ctx):
         data = await response.text()
   data = json.loads(await response.text())
   useless_fact = data["text"]
-  await asyncio.sleep(0)
+  
   await ctx.send(useless_fact)         
 
 @client.hybrid_command(description="returns a randomized decision")
@@ -171,12 +168,12 @@ async def advice(ctx):
 #displays the bot commands
 async def help(ctx):
   await ctx.defer()
-  await ctx.send("""__**Rando is here!**__\n\nRando is a simple bot that will help you deal with life's twists and turns.\nHow does it do that?? With randomness, of course!\n\n***"So much of life, it seems to me, is determined by pure randomness." -some random guy***\n\n????????????????????????????????????????????????????????????\n**?number:** *returns a random number from a range of numbers you specify.*\n**?word:** *returns a random word.*\n**?name:** *returns a random nickname.*\n**?fact:** *returns a random useless fact.*\n**?face:** *returns a random face from a person that doesn't exist.*\n**?card:** *returns a random card from a standard 52-card deck.*\n**?someone:** *returns a random server member. (can be pinged)*\n**?pix:** :rock: :roll_of_paper: :scissors:\n**?advice + a yes or no question:** *returns random advice. (The bot is not responsible for the repercussions of the decisions you make.)*\n**?guess:** *initiates a game wherein you guess which number the bot is thinking from a range of numbers you specify.*\n\n**+ MORE COMMANDS TO COME IN THE FUTURE!**\n????????????????????????????????????????????????????????????""")
-
-keep_alive()
+  await ctx.send("""__**Rando is here!**__\n\nRando is a simple bot that will help you deal with life's twists and turns.\nHow does it do that?? With randomness, of course!\n\n***"So much of life, it seems to me, is determined by pure randomness." -some random guy***\n\n????????????????????????????????????????????????????????????\n**?number:** *returns a random number from a range of numbers you specify.*\n**?word:** *returns a random word.*\n**?name:** *returns a random nickname.*\n**?fact:** *returns a random useless fact.*\n**?face:** *returns a random face from a person that doesn't exist.*\n**?card:** *returns a random card from a standard 52-card deck.*\n**?someone:** *returns a random server member. (can be pinged)*\n**?pix:** :rock: :roll_of_paper: :scissors:\n**?advice + a yes or no question:** *returns random advice. (The bot is not responsible for the repercussions of the decisions you make.)*\n**?guess:** *initiates a game wherein you guess which number the bot is thinking from a range of numbers you specify.*\n\n**NOW SUPPORTS SLASH COMMANDS!!**\n????????????????????????????????????????????????????????????""")
 
 #kills container when the bot gets rate limited
-try:
-  client.run(os.environ['TOKEN'])
-except:
-  os.system("kill 1")
+while __name__ == "__main__":
+  try:
+    keep_alive()
+    client.run(os.environ['TOKEN'])
+  except:
+    os.system("kill 1")
