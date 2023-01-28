@@ -11,12 +11,14 @@ from keepalive import keep_alive
 
 from random_words import RandomWords, RandomNicknames
 
-intents = discord.Intents.all()
+intents = discord.Intents.default()
+intents.message_content = True
+intents.members = True
 
 #changes Discord activity to "Playing you like a fiddle"
 prefix = "?"
 activity = discord.Game(name="you like a fiddle")
-client = commands.Bot(command_prefix=prefix, case_insensitive=True, intents=intents, help_command=None, activity=activity, status=discord.Status.idle)
+client = commands.Bot(command_prefix=prefix, case_insensitive=True, intents=intents, help_command=None, activity=activity)
 
 @client.event
 #ensures bot is ready
